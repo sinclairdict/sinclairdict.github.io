@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sinclairdict.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="过程指的就是VBA模块中的代码，或者宏。通过教程的学习，记录实现以下应用的过程：通过活动工作簿中Sheet名称的字母顺序，按从小到大的顺序重新整理工作簿Sheet位置。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VBA编程学习-子过程应用（排序）">
+<meta property="og:url" content="http://sinclairdict.github.io/2022/03/02/VBA%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0-%E5%AD%90%E8%BF%87%E7%A8%8B%E5%BA%94%E7%94%A8%EF%BC%88%E6%8E%92%E5%BA%8F%EF%BC%89/index.html">
+<meta property="og:site_name" content="Sincair Dict">
+<meta property="og:description" content="过程指的就是VBA模块中的代码，或者宏。通过教程的学习，记录实现以下应用的过程：通过活动工作簿中Sheet名称的字母顺序，按从小到大的顺序重新整理工作簿Sheet位置。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-02T03:20:02.000Z">
+<meta property="article:modified_time" content="2023-07-19T23:53:53.000Z">
+<meta property="article:author" content="Sinclair">
+<meta property="article:tag" content="VBA">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://sinclairdict.github.io/2022/03/02/VBA%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0-%E5%AD%90%E8%BF%87%E7%A8%8B%E5%BA%94%E7%94%A8%EF%BC%88%E6%8E%92%E5%BA%8F%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>VBA编程学习-子过程应用（排序） | Sincair Dict</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-232374263-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-232374263-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sincair Dict</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Things do not change, we do.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://sinclairdict.github.io/2022/03/02/VBA%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0-%E5%AD%90%E8%BF%87%E7%A8%8B%E5%BA%94%E7%94%A8%EF%BC%88%E6%8E%92%E5%BA%8F%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="Sinclair">
+      <meta itemprop="description" content="胡说八道">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sincair Dict">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          VBA编程学习-子过程应用（排序）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-02 11:20:02" itemprop="dateCreated datePublished" datetime="2022-03-02T11:20:02+08:00">2022-03-02</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>过程指的就是VBA模块中的代码，或者宏。通过教程的学习，记录实现以下应用的过程：<br>通过活动工作簿中Sheet名称的字母顺序，按从小到大的顺序重新整理工作簿Sheet位置。</p>
+<span id="more"></span>
+<h2 id="分析应用的需求"><a href="#分析应用的需求" class="headerlink" title="分析应用的需求"></a>分析应用的需求</h2><p>通过分析目标，发现应用需要实现以下需求：</p>
+<ol>
+<li>活动工作簿按照Sheet名称字母的升序进行排序；</li>
+<li>应用可以比较方便地执行；</li>
+<li>可以在不打开用于编程的工作簿时使用程序；</li>
+<li>可以在任何工作簿中运行；</li>
+<li>捕获错误，不弹出任何VBA错误消息。</li>
+</ol>
+<h2 id="分析应用的问题"><a href="#分析应用的问题" class="headerlink" title="分析应用的问题"></a>分析应用的问题</h2><p>梳理与应用相关的信息，发现目前存在以下问题待解决：</p>
+<ol>
+<li>Excel中没有对Sheet进行排序的命令；</li>
+<li>宏录制器无法用来录制Sheet的排序；</li>
+<li>排序需要对Sheet进行移动；</li>
+<li>需要知道活动工作簿中Sheet的数量；</li>
+<li>需要知道活动工作簿中所有Sheet的名称；</li>
+<li>应用能够在其他工作簿中运行。</li>
+</ol>
+<h2 id="问题拟解决的思路"><a href="#问题拟解决的思路" class="headerlink" title="问题拟解决的思路"></a>问题拟解决的思路</h2><p>根据目前存在的待解决问题，拟考虑通过以下方式处理：</p>
+<ol>
+<li>标识出活动工作簿；</li>
+<li>获取工作簿中所有Sheet的名称，存放到一组字符串类型的数组里；</li>
+<li>对数组进行升序排列；</li>
+<li>根据新排序的数组重新移动Sheet位置。</li>
+</ol>
+<h2 id="宏录制器辅助"><a href="#宏录制器辅助" class="headerlink" title="宏录制器辅助"></a>宏录制器辅助</h2><p>在应用实现的过程中，可以通过宏录制器快速了解VBA语法，例如移动Sheet的程序代码。<br>通过宏录制器，记录将Sheet3的位置通过鼠标拖动到Sheet1之前的动作，查看代码，发现Move的用法：<br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Sub MoveSheet()</span><br><span class="line">    Sheets(&quot;Sheet3&quot;).Select</span><br><span class="line">    Sheets(&quot;Sheet3&quot;).Move Before:=Sheets(1)</span><br><span class="line">End Sub</span><br></pre></td></tr></table></figure></p>
+<h2 id="立即窗口辅助"><a href="#立即窗口辅助" class="headerlink" title="立即窗口辅助"></a>立即窗口辅助</h2><p>在应用实现的过程中，还可以通过立即窗口，快速查看代码的运行结果，例如测试查阅的语句。<br>为获取工作簿中Sheet数量，通过查阅资料，发现集合的Count属性，在立即窗口测试：<br>    <code>?ActiveWorkbook.Sheets.Count</code><br>得到测试结果，为实际Sheet的数量；<br>为获取工作簿中Sheet的名称，在立即窗口测试：<br>    <code>?ActiveWorkbook.Sheets(1).Name</code><br>得到测试结果，为实际Sheet的名称；</p>
+<h2 id="子功能编写"><a href="#子功能编写" class="headerlink" title="子功能编写"></a>子功能编写</h2><h3 id="遍历集合中的每个成员"><a href="#遍历集合中的每个成员" class="headerlink" title="遍历集合中的每个成员"></a>遍历集合中的每个成员</h3><p>使用For Each-Next结构实现遍历集合的动作：<br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Sub Text()</span><br><span class="line">    For Each sht in ActiveWorkbook.Sheets</span><br><span class="line">        MsgBox sht.Name</span><br><span class="line">    Next sht</span><br><span class="line">End Sub</span><br></pre></td></tr></table></figure><br>代码弹出与活动工作簿中Sheet数量相同的消息框，并对应相应的Sheet名称。</p>
+<h3 id="将活动工作簿的Sheet名称放入数组"><a href="#将活动工作簿的Sheet名称放入数组" class="headerlink" title="将活动工作簿的Sheet名称放入数组"></a>将活动工作簿的Sheet名称放入数组</h3><p>因为不知道活动工作簿的Sheet具体数量，可以先通过带空括号的Dim语句声明数组，之后使用ReDim语句重新定义数组的维数，使其等于实际的Sheet数量。将Sheet名称输入到SheetNames数组中：<br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Sub SortSheets()</span><br><span class="line">    Dim SheetNames() As String</span><br><span class="line">    Dim i As Long</span><br><span class="line">    Dim SheetCount As Long</span><br><span class="line"></span><br><span class="line">    SheetCount = ActiveWorkbook.Sheets.Count</span><br><span class="line">    ReDim SheetNames(1 To SheetCount)</span><br><span class="line"></span><br><span class="line">    For i = 1 To SheetCount</span><br><span class="line">        SheetNames(i) = ActiveWorkbook.Sheets(i).Name</span><br><span class="line">        Debug.Print SheetNames(i)</span><br><span class="line">    Next i</span><br><span class="line">End Sub</span><br></pre></td></tr></table></figure><br>可在立即窗口中显示结果，为SheetNames数组元素的名称。</p>
+<h3 id="对数组的元素进行排序"><a href="#对数组的元素进行排序" class="headerlink" title="对数组的元素进行排序"></a>对数组的元素进行排序</h3><p>排序算法互联网上有很多示例，例如通过冒泡排序对数组进行排序，即通过嵌套For-Next循环，比较相邻两个元素值，如果前一个元素值大于后一个元素值，则交换位置，重复多次之后，得到升序的元素值。<br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Sub BubbleSort(List() As String)</span><br><span class="line">    Dim First As Long, Last As Long</span><br><span class="line">    Dim i As Long, j As Long</span><br><span class="line">    Dim Temp As String</span><br><span class="line">    First = LBound(List)</span><br><span class="line">    Last = UBound(List)</span><br><span class="line">    For i = First To Last - 1</span><br><span class="line">        For j = i + 1 To Last</span><br><span class="line">            If List(i) &gt; List(j) Then</span><br><span class="line">                Temp = List(j)</span><br><span class="line">                List(j) = List(i)</span><br><span class="line">                List(i) = Temp</span><br><span class="line">            End If</span><br><span class="line">        Next j</span><br><span class="line">    Next i</span><br><span class="line">End Sub</span><br></pre></td></tr></table></figure><br>过程接收不确定元素数量的List一维数组，通过LBound和UBound函数确定数组下界和上界。</p>
+<h3 id="对数组排序"><a href="#对数组排序" class="headerlink" title="对数组排序"></a>对数组排序</h3><p>通过之前宏录制得到移动Sheet的代码，加上For-Next使其遍历每个工作表：<br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">For i = 1 To SheetCount</span><br><span class="line">    ActiveWorkbook.Sheets(SheetNames(i)).Move Before:=ActiveWorkbook.Sheets(i)</span><br><span class="line">Next i</span><br></pre></td></tr></table></figure></p>
+<h3 id="代码整理"><a href="#代码整理" class="headerlink" title="代码整理"></a>代码整理</h3><p>通过整理上述代码，并添加注释行，使代码更便于阅读：<br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Sub SortSheets()</span><br><span class="line">&#x27;按照字母升序移动活动工作簿的Sheet</span><br><span class="line"></span><br><span class="line">    Dim SheetNames() As String</span><br><span class="line">    Dim SheetCount As Long</span><br><span class="line">    Dim i As Long</span><br><span class="line"></span><br><span class="line">    &#x27;统计活动工作簿Sheet数量，并重新设定SheetNames数组元素数量</span><br><span class="line">    SheetCount = ActiveWorkbook.Sheets.Count</span><br><span class="line">    ReDim SheetNames(1 To SheetCount)</span><br><span class="line">   </span><br><span class="line">    &#x27;获取活动工作簿每个Sheet名称</span><br><span class="line">    For i = 1 To SheetCount</span><br><span class="line">        SheetNames(i) = ActiveWorkbook.Sheets(i).Name</span><br><span class="line">    Next i</span><br><span class="line">   </span><br><span class="line">    &#x27;调用BubbleSort程序对SheetNames数组进行排序</span><br><span class="line">    Call BubbleSort(SheetNames)</span><br><span class="line"></span><br><span class="line">    &#x27;移动Sheet</span><br><span class="line">    For i = 1 To SheetCount</span><br><span class="line">        ActiveWorkbook.Sheets(SheetNames(i)).Move Before:=ActiveWorkbook.Sheets(i)</span><br><span class="line">    Next i</span><br><span class="line"></span><br><span class="line">End Sub</span><br></pre></td></tr></table></figure></p>
+<h2 id="功能测试"><a href="#功能测试" class="headerlink" title="功能测试"></a>功能测试</h2><h3 id="问题发现"><a href="#问题发现" class="headerlink" title="问题发现"></a>问题发现</h3><p>加载其他工作簿进行测试，会发现诸多问题，例如：</p>
+<ol>
+<li>工作簿的Sheet在移动期间，屏幕需要更新，因此Sheet数量越多，排序时间越长；</li>
+<li>排序有字母大小写问题，大写字母的值会大于小写字母；</li>
+<li>Excel没有可见工作簿窗口，宏会运行失败；</li>
+<li>工作簿结构受保护的话，移动Sheet命令会失败；</li>
+<li>排序后最后一个Sheet会变成活动工作表，会改变原来的Sheet活动状态；</li>
+<li>通过Ctrl+Break终端宏的运行，VBA会弹出错误消息；</li>
+<li>宏无法返回，误操作导致排序运行后，只能手动恢复。</li>
+</ol>
+<h3 id="问题修复"><a href="#问题修复" class="headerlink" title="问题修复"></a>问题修复</h3><ol>
+<li>可插入指令关闭屏幕的更新动作，在宏完成后，更新动作恢复：<br> <code>Application.ScreenUpdating = False</code></li>
+<li>通过UCase函数，把Sheet名称转换为大写字母，再进行排序：<br> <code>If UCase(List(i)) &gt; UCase(List(j)) Then</code></li>
+<li>通过代码检查是否有活动工作簿，若没有，则退出过程：<br> <code>If ActiveWorkbook Is Nothing Then Exit Sub</code></li>
+<li>如果工作簿结构受到保护，应该显示弹框消息，让用户自己取消保护，而不是程序： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">If ActiveWorkbook.ProtectStructure Then</span><br><span class="line">    MsgBox ActiveWorkbook.Name &amp; &quot; is protected.&quot;, vbCritical, &quot;Cannot Sort Sheets.&quot;</span><br><span class="line">    Exit Sub</span><br><span class="line">End If</span><br></pre></td></tr></table></figure></li>
+<li>添加一个变量，记录原来的活动工作表，排序完成后重新激活：<br> <code>Set OldActive = ActiveSheet</code><br> <code>OldActive.Activate</code></li>
+<li>禁用Ctrl+Break组合键功能：<br> <code>Application.EnableCancelKey = xlDisabled</code></li>
+<li>添加确认弹窗，确认用户是否要移动Sheet位置：<br> <code>If MsgBox(&quot;Sort the sheets in the active workbook?&quot;, vbQuestion + vbYesNo) &lt;&gt; vbYes Then Exit Sub</code></li>
+</ol>
+<h2 id="功能实现"><a href="#功能实现" class="headerlink" title="功能实现"></a>功能实现</h2><p>通过修复上述问题，完善代码后，所有程序过程如下：<br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">Sub SortSheets()</span><br><span class="line">&#x27;按照字母升序移动活动工作簿的Sheet</span><br><span class="line"></span><br><span class="line">    Dim SheetNames() As String</span><br><span class="line">    Dim i As Long</span><br><span class="line">    Dim SheetCount As Long</span><br><span class="line">    Dim OldActive As Object</span><br><span class="line"></span><br><span class="line">    &#x27;判断是否存在活动工作簿，如果存在，统计Sheet数量</span><br><span class="line">    If ActiveWorkbook Is Nothing Then Exit Sub &#x27; No active workbook</span><br><span class="line">    SheetCount = ActiveWorkbook.Sheets.Count</span><br><span class="line"></span><br><span class="line">    &#x27;检查工作簿结构是否受到保护，</span><br><span class="line">    If ActiveWorkbook.ProtectStructure Then</span><br><span class="line">        MsgBox ActiveWorkbook.Name &amp; &quot; is protected.&quot;, vbCritical, &quot;Cannot Sort Sheets.&quot;</span><br><span class="line">        Exit Sub</span><br><span class="line">    End If</span><br><span class="line"></span><br><span class="line">    &#x27;用户确认是否需要进行Sheet排序</span><br><span class="line">    If MsgBox(&quot;Sort the sheets in the active workbook?&quot;, vbQuestion + vbYesNo) &lt;&gt; vbYes Then Exit Sub</span><br><span class="line"></span><br><span class="line">    &#x27;禁用Ctrl+Break组合键</span><br><span class="line">    Application.EnableCancelKey = xlDisabled</span><br><span class="line">   </span><br><span class="line">    &#x27;获取活动工作簿每个Sheet名称</span><br><span class="line">    SheetCount = ActiveWorkbook.Sheets.Count</span><br><span class="line"></span><br><span class="line">    &#x27;重新定义数组元素数量</span><br><span class="line">    ReDim SheetNames(1 To SheetCount)</span><br><span class="line"></span><br><span class="line">    &#x27;记录原来的活动工作簿</span><br><span class="line">    Set OldActive = ActiveSheet</span><br><span class="line">   </span><br><span class="line">    &#x27;用Sheet名称填充数组</span><br><span class="line">    For i = 1 To SheetCount</span><br><span class="line">        SheetNames(i) = ActiveWorkbook.Sheets(i).Name</span><br><span class="line">    Next i</span><br><span class="line">   </span><br><span class="line">    &#x27;对数组进行排序</span><br><span class="line">    Call BubbleSort(SheetNames)</span><br><span class="line">   </span><br><span class="line">    &#x27;关闭屏幕更新</span><br><span class="line">    Application.ScreenUpdating = False</span><br><span class="line"></span><br><span class="line">    &#x27;移动Sheet</span><br><span class="line">    For i = 1 To SheetCount</span><br><span class="line">        ActiveWorkbook.Sheets(SheetNames(i)).Move Before:=ActiveWorkbook.Sheets(i)</span><br><span class="line">    Next i</span><br><span class="line"></span><br><span class="line">    &#x27;恢复之前的活动工作表</span><br><span class="line">    OldActive.Activate</span><br><span class="line"></span><br><span class="line">End Sub</span><br><span class="line"></span><br><span class="line">Sub BubbleSort(List() As String)</span><br><span class="line">&#x27;按照字母升序排序法</span><br><span class="line">    Dim First As Long, Last As Long</span><br><span class="line">    Dim i As Long, j As Long</span><br><span class="line">    Dim Temp As String</span><br><span class="line">    First = LBound(List)</span><br><span class="line">    Last = UBound(List)</span><br><span class="line">    For i = First To Last - 1</span><br><span class="line">        For j = i + 1 To Last</span><br><span class="line">            If UCase(List(i)) &gt; UCase(List(j)) Then</span><br><span class="line">                Temp = List(j)</span><br><span class="line">                List(j) = List(i)</span><br><span class="line">                List(i) = Temp</span><br><span class="line">            End If</span><br><span class="line">        Next j</span><br><span class="line">    Next i</span><br><span class="line">End Sub</span><br></pre></td></tr></table></figure></p>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><ul>
+<li><p>可以在宏最上方添加Option Explicit代码，声明所有变量都需要先定义才能使用，可以避免变量因名拼写等错误带来的结果错误。</p>
+</li>
+<li><p>为了使在其他的工作簿也能使用代码，可以将代码保存在“个人宏工作簿”，即在工程窗口中的Personal.xlsb中编辑代码。<br>执行宏的方法：</p>
+<ul>
+<li>按Alt+F8打开宏对话框，选择宏；</li>
+<li>对宏设置快捷键，通过快捷键打开；</li>
+<li>将宏添加到功能区。</li>
+</ul>
+</li>
+<li><p>该实例严格来讲并不符合逻辑，例如Sheet10会排在Sheet2之前。</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/VBA/" rel="tag"><i class="fa fa-tag"></i> VBA</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/25/VBA%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0-%E5%BD%95%E5%88%B6%E5%AE%8F/" rel="prev" title="VBA编程学习-录制宏">
+      <i class="fa fa-chevron-left"></i> VBA编程学习-录制宏
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/23/Excel%E5%87%BD%E6%95%B0-OFFSET/" rel="next" title="Excel函数-OFFSET">
+      Excel函数-OFFSET <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E5%BA%94%E7%94%A8%E7%9A%84%E9%9C%80%E6%B1%82"><span class="nav-number">1.</span> <span class="nav-text">分析应用的需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E5%BA%94%E7%94%A8%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">分析应用的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8B%9F%E8%A7%A3%E5%86%B3%E7%9A%84%E6%80%9D%E8%B7%AF"><span class="nav-number">3.</span> <span class="nav-text">问题拟解决的思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8F%E5%BD%95%E5%88%B6%E5%99%A8%E8%BE%85%E5%8A%A9"><span class="nav-number">4.</span> <span class="nav-text">宏录制器辅助</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%8B%E5%8D%B3%E7%AA%97%E5%8F%A3%E8%BE%85%E5%8A%A9"><span class="nav-number">5.</span> <span class="nav-text">立即窗口辅助</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%90%E5%8A%9F%E8%83%BD%E7%BC%96%E5%86%99"><span class="nav-number">6.</span> <span class="nav-text">子功能编写</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%8D%E5%8E%86%E9%9B%86%E5%90%88%E4%B8%AD%E7%9A%84%E6%AF%8F%E4%B8%AA%E6%88%90%E5%91%98"><span class="nav-number">6.1.</span> <span class="nav-text">遍历集合中的每个成员</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%86%E6%B4%BB%E5%8A%A8%E5%B7%A5%E4%BD%9C%E7%B0%BF%E7%9A%84Sheet%E5%90%8D%E7%A7%B0%E6%94%BE%E5%85%A5%E6%95%B0%E7%BB%84"><span class="nav-number">6.2.</span> <span class="nav-text">将活动工作簿的Sheet名称放入数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E6%95%B0%E7%BB%84%E7%9A%84%E5%85%83%E7%B4%A0%E8%BF%9B%E8%A1%8C%E6%8E%92%E5%BA%8F"><span class="nav-number">6.3.</span> <span class="nav-text">对数组的元素进行排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E6%95%B0%E7%BB%84%E6%8E%92%E5%BA%8F"><span class="nav-number">6.4.</span> <span class="nav-text">对数组排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%95%B4%E7%90%86"><span class="nav-number">6.5.</span> <span class="nav-text">代码整理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E6%B5%8B%E8%AF%95"><span class="nav-number">7.</span> <span class="nav-text">功能测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E5%8F%91%E7%8E%B0"><span class="nav-number">7.1.</span> <span class="nav-text">问题发现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E4%BF%AE%E5%A4%8D"><span class="nav-number">7.2.</span> <span class="nav-text">问题修复</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0"><span class="nav-number">8.</span> <span class="nav-text">功能实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-number">9.</span> <span class="nav-text">补充</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Sinclair"
+      src="/images/head.jpg">
+  <p class="site-author-name" itemprop="name">Sinclair</p>
+  <div class="site-description" itemprop="description">胡说八道</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:sinclairdsc@gmail.com" title="E-Mail → mailto:sinclairdsc@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sinclair</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

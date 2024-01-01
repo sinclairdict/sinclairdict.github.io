@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sinclairdict.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="对面小哥在win下删除一个程序时，直接删除了程序的整个安装目录，但打开控制面板的卸载程序，依旧能看到这个程序的名字，这洁癖可不能忍。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="卸载顽固软件的方式">
+<meta property="og:url" content="http://sinclairdict.github.io/2020/01/11/%E5%8D%B8%E8%BD%BD%E9%A1%BD%E5%9B%BA%E8%BD%AF%E4%BB%B6%E7%9A%84%E6%96%B9%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Sincair Dict">
+<meta property="og:description" content="对面小哥在win下删除一个程序时，直接删除了程序的整个安装目录，但打开控制面板的卸载程序，依旧能看到这个程序的名字，这洁癖可不能忍。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-01-11T14:06:28.000Z">
+<meta property="article:modified_time" content="2024-01-01T08:46:15.216Z">
+<meta property="article:author" content="Sinclair">
+<meta property="article:tag" content="教程">
+<meta property="article:tag" content="Windows">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://sinclairdict.github.io/2020/01/11/%E5%8D%B8%E8%BD%BD%E9%A1%BD%E5%9B%BA%E8%BD%AF%E4%BB%B6%E7%9A%84%E6%96%B9%E5%BC%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>卸载顽固软件的方式 | Sincair Dict</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-232374263-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-232374263-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sincair Dict</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Things do not change, we do.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://sinclairdict.github.io/2020/01/11/%E5%8D%B8%E8%BD%BD%E9%A1%BD%E5%9B%BA%E8%BD%AF%E4%BB%B6%E7%9A%84%E6%96%B9%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="Sinclair">
+      <meta itemprop="description" content="胡说八道">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sincair Dict">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          卸载顽固软件的方式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-11 22:06:28" itemprop="dateCreated datePublished" datetime="2020-01-11T22:06:28+08:00">2020-01-11</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>对面小哥在win下删除一个程序时，直接删除了程序的整个安装目录，但打开控制面板的卸载程序，依旧能看到这个程序的名字，这洁癖可不能忍。</p>
+<span id="more"></span>
+<p>最终的解决方式是，通过搜索关键词，删除掉注册列表里所有跟这个程序相关的项目，重启后卸载程序里才消失不见。</p>
+<p>但后期搜索，我发现即使这样做，也并不代表电脑就回到了安装软件前的状态，或者说大概率不太可能回滚到最初的状态了。</p>
+<p>因为理论上，一个程序从安装、运行到卸载的整个过程中，在赋予它的权限下，是有能力肆意修改系统里任何它能影响的地方，甚至在正常卸载后也可能不去恢复它带来的改动，这全凭开发者的自我道德约束。</p>
+<p>那么反向思考一下，安装一个程序，有可能会给系统添加一些什么内容呢？通过搜索，，发现会有很多不可逆的修改，此处暂不统计，正规程序大致会添加以下项目：</p>
+<h3 id="安装目录"><a href="#安装目录" class="headerlink" title="安装目录"></a>安装目录</h3><ol>
+<li>Program Files(x86)或Program Files或自定义文件夹，用来存放程序及其自身卸载程序；</li>
+<li>Program Files\Common Files文件夹，用来存放同一公司不同程序的共用库文件；</li>
+<li>ProgramData文件夹，用来存放程序的相关配置文件；，很多程序会在这个地方存放它的配置相关的信息；</li>
+<li>windows\system32\drivers文件夹，用来存放一些软件驱动；</li>
+<li>个人文档及内AppData文件夹，用来存放一些个人配置和个人信息；</li>
+<li>ProgramData\Microsoft\Windows\Start Menu\Programs文件夹，用来存放开始菜单内的程序快捷方式。</li>
+</ol>
+<h3 id="注册列表"><a href="#注册列表" class="headerlink" title="注册列表"></a>注册列表</h3><p>查看方式，运行：regedit</p>
+<ol>
+<li>HKEY_CURRENT_USER\Software，包含程序配置文件；</li>
+<li>HKEY_LOCAL_MACHINE\SOFTWARE，包含程序配置文件。</li>
+</ol>
+<blockquote>
+<p>补充：<br> HKEY_CLASSES_ROOT：启动应用程序所需的全部信息，包含扩展名、驱动、文件关联、编号、图标等；<br> HKEY_CURRENT_USER：当前用户的配置信息，包含环境变量、程序、桌面配置等；<br> HKEY_LOCAL_MACHINE：本地计算机系统信息，包含硬件和系统信息、安全数据、程序设置等；<br> HKEY_USERS：当前用户的使用配置，包含当前用户图标、激活程序组、开始菜单等；<br>HKEY_CURRENT_CONFIG：本地计算机硬件配置，由HKEY_LOCAL_MACHINE映射而来。</p>
+</blockquote>
+<h3 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h3><p>查看方式，运行：services.msc</p>
+<blockquote>
+<p>卸载方法：<br>1.输入cmd打开命令提示符，此时抬头为windows\system32&gt;；<br>2.键入’sc delete 服务名’，刷新服务即可。</p>
+</blockquote>
+<h3 id="启动项"><a href="#启动项" class="headerlink" title="启动项"></a>启动项</h3><p>查看方式，打开任务管理器，点击启动。</p>
+<blockquote>
+<p>可能存在的文件夹：<br> ‘C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp’<br> ‘%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup’<br>可能存在的注册列表：<br> ‘HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run’<br>‘HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run’</p>
+</blockquote>
+<h3 id="dll文件"><a href="#dll文件" class="headerlink" title="dll文件"></a>dll文件</h3><p>dll是动态链接库，文件包含着多个程序共同使用的代码和数据的库。之前装一些冷门程序时经常会遇到缺少XXX.dll的错误信息，就是少了这个动态链接库的原因，在此一并记录安装和卸载方法。</p>
+<p>查询正在运行的哪些程序调用了哪些dll库的方法：</p>
+<ol>
+<li>以管理员权限启动命令提示符</li>
+<li>键入’tasklist &#x2F;m&gt;D:\listdll.txt’</li>
+<li>打开D盘刚刚生成的listdll.txt文件，列举了dll调用情况。</li>
+</ol>
+<p>dll安装方法一：</p>
+<ol>
+<li>找到.dll文件，将其放入’C:\Windows\System32’文件夹内；</li>
+<li>打开运行，键入’regsvr32 库文件名’，成功与否都会有提示。</li>
+</ol>
+<p>dll安装方法二:</p>
+<ol>
+<li>找到.dll文件，将其放入任意文件夹内；</li>
+<li>在该文件夹内，右击选择在此处打开命令窗口；</li>
+<li>命令提示符中键入’regsvr32 &#x2F;s 库文件名；</li>
+</ol>
+<p>dll卸载方法：</p>
+<ol>
+<li>找到存放.dll文件的文件夹，防止出错，备份.dll文件；</li>
+<li>在该文件夹内，右击选择在此处打开命令窗口；</li>
+<li>命令提示符中键入’regsvr32 &#x2F;u 库文件名；</li>
+<li>删除.dll文件。</li>
+</ol>
+<p>这只是正规程序可能会添加的文件，要是碰到一些无良开发者，指不定在你的系统某些位置会悄悄塞些什么文件，而且程序的一些修改键值或者配置的操作是属于不可逆的，碰到这种，就毫无办法。</p>
+<p>查到一种称为UWP的程序，该类程序需要Microsoft Store审核通过才能上架应用商店，权限后台都会有一定的限制，安装卸载更为方便。</p>
+<blockquote>
+<p>UWP即Windows 10中的Universal Windows Platform简称。即Windows通用应用平台，在Windows 10 Mobile&#x2F;Surface（Windows平板电脑）&#x2F;PC&#x2F;Xbox&#x2F;HoloLens等平台上运行，uwp不同于传统pc上的exe应用，也跟只适用于手机端的app有本质区别。它并不是为某一个终端而设&gt;计，而是可以在所有Windows10设备上运行。</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E6%95%99%E7%A8%8B/" rel="tag"><i class="fa fa-tag"></i> 教程</a>
+              <a href="/tags/Windows/" rel="tag"><i class="fa fa-tag"></i> Windows</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/02/%E9%80%9A%E8%BF%87WinPE%E4%BF%AE%E6%94%B9%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%9C%AC%E5%9C%B0%E5%AF%86%E7%A0%81/" rel="prev" title="通过WinPE修改计算机本地密码">
+      <i class="fa fa-chevron-left"></i> 通过WinPE修改计算机本地密码
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/29/Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" rel="next" title="Hexo博客搭建">
+      Hexo博客搭建 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E7%9B%AE%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">安装目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C%E5%88%97%E8%A1%A8"><span class="nav-number">2.</span> <span class="nav-text">注册列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1"><span class="nav-number">3.</span> <span class="nav-text">服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E9%A1%B9"><span class="nav-number">4.</span> <span class="nav-text">启动项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dll%E6%96%87%E4%BB%B6"><span class="nav-number">5.</span> <span class="nav-text">dll文件</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Sinclair"
+      src="/images/head.jpg">
+  <p class="site-author-name" itemprop="name">Sinclair</p>
+  <div class="site-description" itemprop="description">胡说八道</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:sinclairdsc@gmail.com" title="E-Mail → mailto:sinclairdsc@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sinclair</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

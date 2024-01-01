@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sinclairdict.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="通常情况下，当用一台IP地址为192.168.1.1的计算机去ping一台IP地址为192.168.2.1的计算机时，会出现“请求超时”的错误，即无法ping通，此时增加一台配置过的三层交换机，就能实现两台电脑互相访问的目的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三层交换机简单配置-网关模式">
+<meta property="og:url" content="http://sinclairdict.github.io/2021/11/21/%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE-%E7%BD%91%E5%85%B3%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Sincair Dict">
+<meta property="og:description" content="通常情况下，当用一台IP地址为192.168.1.1的计算机去ping一台IP地址为192.168.2.1的计算机时，会出现“请求超时”的错误，即无法ping通，此时增加一台配置过的三层交换机，就能实现两台电脑互相访问的目的。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://sinclairdict.github.io/assets/images/211121_1.jpg">
+<meta property="og:image" content="http://sinclairdict.github.io/assets/images/211121_2.jpg">
+<meta property="og:image" content="http://sinclairdict.github.io/assets/images/211121_3.jpg">
+<meta property="article:published_time" content="2021-11-21T12:26:07.000Z">
+<meta property="article:modified_time" content="2023-07-19T23:53:53.000Z">
+<meta property="article:author" content="Sinclair">
+<meta property="article:tag" content="交换机">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://sinclairdict.github.io/assets/images/211121_1.jpg">
+
+<link rel="canonical" href="http://sinclairdict.github.io/2021/11/21/%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE-%E7%BD%91%E5%85%B3%E6%A8%A1%E5%BC%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>三层交换机简单配置-网关模式 | Sincair Dict</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-232374263-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-232374263-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sincair Dict</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Things do not change, we do.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://sinclairdict.github.io/2021/11/21/%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE-%E7%BD%91%E5%85%B3%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="Sinclair">
+      <meta itemprop="description" content="胡说八道">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sincair Dict">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          三层交换机简单配置-网关模式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-21 20:26:07" itemprop="dateCreated datePublished" datetime="2021-11-21T20:26:07+08:00">2021-11-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>通常情况下，当用一台IP地址为192.168.1.1的计算机去ping一台IP地址为192.168.2.1的计算机时，会出现“请求超时”的错误，即无法ping通，此时增加一台配置过的三层交换机，就能实现两台电脑互相访问的目的。</p>
+<span id="more"></span>
+<p>那么在配置三层交换机前，需要了解一些信息。</p>
+<h3 id="1-怎么理解IPv4地址？"><a href="#1-怎么理解IPv4地址？" class="headerlink" title="1. 怎么理解IPv4地址？"></a>1. 怎么理解IPv4地址？</h3><p>IP是在同一个网络中，设备的唯一标识，起初是一串十进制数字，后来由点分为四组十进制数，再后来便于记忆，映射为域名，<br>由于计算机的二进制，即每个IP地址的由一个32位的二进制数来表示，以IP地址192.168.1.1为例：<br>192二进制表示为1100 0000；168二进制表示为1010 1000；1二进制表示为0000 0001<br>那么把上述IP地址转换成一个32位的二进制数就是1100 0000 1010 1000 0000 0001 0000 0001；<br>再将这个二进制数转换位十进制数，即3232235777，在网络中，这串数字等同于IP地址，但ping的时候容易被识别成设备名称。</p>
+<h3 id="2-怎么理解子网掩码？"><a href="#2-怎么理解子网掩码？" class="headerlink" title="2. 怎么理解子网掩码？"></a>2. 怎么理解子网掩码？</h3><p>子网掩码必须配合IP地址使用，也是一组32位的二进制数，它用来区分网络范围，即同一网段，可分配多少个IP，<br>即以二进制表示子网掩码，从左数多少位为1，相应的二进制下IP地址前多少位必须保持一致，才能被视为同一网络范围，<br>比如常见的IP表示方法192.168.1.1&#x2F;24，这个24指的就是子网掩码，24指32位的子网掩码，前24位为1，<br>即1111 1111 1111 1111 1111 1111 0000 0000，将其点分后转换为十进制，即255.255.255.0；<br>同时表明IP地址前三组数字相同时，即192.168.1.0-255的形式，才能被视为同一网络范围，<br>类似的子网掩码&#x2F;16指的就是255.255.0.0，IP地址前两组数字相同，就可以被视为同一网络范围。</p>
+<h3 id="3-怎么理解默认网关？"><a href="#3-怎么理解默认网关？" class="headerlink" title="3. 怎么理解默认网关？"></a>3. 怎么理解默认网关？</h3><p>网关的作用是连接两个不同的网络范围，网关就是路由，当设备需要连接其他网络时，会将数据通过网关，传递到其他网络中。</p>
+<h3 id="4-二层交换机和三层交换机的区别？"><a href="#4-二层交换机和三层交换机的区别？" class="headerlink" title="4. 二层交换机和三层交换机的区别？"></a>4. 二层交换机和三层交换机的区别？</h3><p>二层交换机通常用来在同一网络范围内转发数据，三层交换机相当于增加了路由功能的二层交换机，能在不同网络内转发数据。</p>
+<h3 id="5-三层交换机配置-网关模式"><a href="#5-三层交换机配置-网关模式" class="headerlink" title="5. 三层交换机配置-网关模式"></a>5. 三层交换机配置-网关模式</h3><p>大致了解上述信息，就可以开始简单的使用网关来配置三层交换机了。</p>
+<p>以Cisco的<a target="_blank" rel="noopener" href="https://www.netacad.com/zh-hans/courses/packet-tracer">模拟软件</a>为例，建立一台名为L2-Switch1的交换机，连接两台IP地址为192.168.1.x网络的计算机(任意电口都可以)，建立一台名为L2-Switch2的交换机，连接两台IP地址为192.168.2.x网络的计算机(任意电口都可以)，将L2-Switch1交换机任意电口连接到L3-Switch交换机的1口，将L2-Switch2交换机任意电口连接到L3-Switch交换机的2口。<br><img src="/assets/images/211121_1.jpg"><br>此时，相同网络内的计算机可以相互ping通，不同网络的计算机不能ping通。</p>
+<p>进入L3-Switch交换机的配置界面，键入命令：<br><img src="/assets/images/211121_2.jpg"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">en  </span><br><span class="line">conf t  </span><br><span class="line">no aaa new-model  	</span><br><span class="line">no ip domain-lookup  </span><br><span class="line">ip routing  </span><br><span class="line">no spanning-tree vlan 1  </span><br><span class="line">int f 0/1  </span><br><span class="line">no switchport  	</span><br><span class="line">no sh	 </span><br><span class="line">ip addr 192.168.1.253 255.255.255.0  </span><br><span class="line">exit  </span><br><span class="line">int f 0/2  </span><br><span class="line">no switchport	 </span><br><span class="line">no sh	 </span><br><span class="line">ip addr 192.168.2.253 255.255.255.0  </span><br><span class="line">exit  </span><br><span class="line">router rip  </span><br><span class="line"> version 2  </span><br><span class="line"> timers basic 1 180 0 240  </span><br><span class="line"> network 192.168.1.0  </span><br><span class="line"> network 192.168.2.0  </span><br><span class="line">end  </span><br><span class="line">wr  </span><br></pre></td></tr></table></figure>
+
+<p>在L2-Switch1交换机上的两台电脑内设置上述192.168.1.253的默认网关，在L2-Switch2交换机上的电脑内设置192.168.2.253的默认网关，就能够实现跨网络的计算机互相访问。<br><img src="/assets/images/211121_3.jpg"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E4%BA%A4%E6%8D%A2%E6%9C%BA/" rel="tag"><i class="fa fa-tag"></i> 交换机</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/30/%E7%B3%BB%E7%BB%9F%E6%89%98%E7%AE%A1McAfee%E5%B0%8F%E5%9B%BE%E6%A0%87%E6%B6%88%E5%A4%B1%E7%9A%84%E5%A4%84%E7%90%86/" rel="prev" title="系统托管McAfee小图标消失的处理">
+      <i class="fa fa-chevron-left"></i> 系统托管McAfee小图标消失的处理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/28/%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE-VLAN%E6%A8%A1%E5%BC%8F/" rel="next" title="三层交换机简单配置-VLAN模式">
+      三层交换机简单配置-VLAN模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3IPv4%E5%9C%B0%E5%9D%80%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">1. 怎么理解IPv4地址？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">2. 怎么理解子网掩码？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3%E9%BB%98%E8%AE%A4%E7%BD%91%E5%85%B3%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">3. 怎么理解默认网关？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E4%BA%8C%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA%E5%92%8C%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">4. 二层交换机和三层交换机的区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA%E9%85%8D%E7%BD%AE-%E7%BD%91%E5%85%B3%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.</span> <span class="nav-text">5. 三层交换机配置-网关模式</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Sinclair"
+      src="/images/head.jpg">
+  <p class="site-author-name" itemprop="name">Sinclair</p>
+  <div class="site-description" itemprop="description">胡说八道</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:sinclairdsc@gmail.com" title="E-Mail → mailto:sinclairdsc@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sinclair</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
