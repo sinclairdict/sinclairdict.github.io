@@ -104,4 +104,4 @@ theme: next
 deploy:
   type: git
   repo: git@github.com:sinclairdict/sinclairdict.github.io.git
-  branch: web
+  branch: master
