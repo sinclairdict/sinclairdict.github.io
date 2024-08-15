@@ -52,4 +52,18 @@ date: 2020-06-29 21:57:19
 	>hexo g
 	>hexo d
 
+### git代理
+1. 配置socks5代理
+	>git config --global http.proxy socks5 127.0.0.1:7890
+	>git config --global https.proxy socks5 127.0.0.1:7890
+2. 配置http代理
+	>git config --global http.proxy 127.0.0.1:7890
+	>git config --global https.proxy 127.0.0.1:7890
+3. 查看代理
+	>git config --global --get http.proxy
+	>git config --global --get https.proxy
+4. 取消代理
+	>git config --global --unset http.proxy
+	>git config --global --unset https.proxy
+
 以上
