@@ -3,7 +3,7 @@ layout: post
 title: 10bit二进制数反转位序后转换十六进制
 comments: true
 tags:
-  - 教程
+  - EXCEL
 date: 2025-04-09 16:50:16
 ---
 例如二进制数11111，通过EXCEL先扩展成10bit的二进制数，再首位翻转后，转换成十六进制
