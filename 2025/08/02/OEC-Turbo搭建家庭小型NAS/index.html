@@ -28,9 +28,8 @@
 <meta property="og:description" content="在B站上看到有篇用OEC-Turbo搭建NAS的教程，参考着搭建家庭个人影音库。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://sinclairdict.github.io/assets/images/250802_1.jpg">
-<meta property="og:image" content="http://sinclairdict.github.io/assets/images/200113_1.jpg">
 <meta property="article:published_time" content="2025-08-02T13:48:46.000Z">
-<meta property="article:modified_time" content="2025-08-02T15:27:41.735Z">
+<meta property="article:modified_time" content="2025-08-07T16:23:44.974Z">
 <meta property="article:author" content="Sinclair">
 <meta property="article:tag" content="NAS">
 <meta name="twitter:card" content="summary">
@@ -230,11 +229,11 @@
 </tr>
 <tr>
 <td>网络接口</td>
-<td></td>
+<td>千兆以太网接口 *1</td>
 </tr>
 <tr>
 <td>硬盘接口</td>
-<td>SATA3.0接口*1；支持内置2.5寸 硬盘</td>
+<td>SATA3.0接口*1；支持内置2.5寸硬盘</td>
 </tr>
 <tr>
 <td>USB</td>
@@ -344,7 +343,13 @@
 <li>在SATA硬盘中新建Docker文件夹</li>
 <li>依次执行如下命令，注意文件路径<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop docker.socket</span><br><span class="line">systemctl stop docker</span><br><span class="line">mv /var/lib/docker /mnt/Storage1_sda1/docker</span><br><span class="line">ln -s /mnt/Storage1_sda1/docker /var/lib/docker</span><br><span class="line">systemctl start docker.socket</span><br><span class="line">systemctl start docker</span><br></pre></td></tr></table></figure></li>
 </ul>
-<p><img src="/assets/images/200113_1.jpg" alt="插入图片"><br><a target="_blank" rel="noopener" href="https://github.com/litten/hexo-theme-yilia/pull/646">引用网页</a></p>
+<ol start="3">
+<li>Tailscale内网穿透</li>
+</ol>
+<ul>
+<li>方法一：<br>注册tailscale账号<br>在casaOS中安装tailscale<br>将tailscale设置中的TS_ROUTES设为同一网段<br>复制日志中找到的一次性认证连接<br>在tailscale主页中添加设备</li>
+<li>方法二：<br>在tailscale主页设置中打开key页面<br>获取一个短期90天的authkey<br>在casaOS上的tailscale设置中，添加TS_AUTHKEY</li>
+</ul>
 
     </div>
 
