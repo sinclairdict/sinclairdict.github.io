@@ -15,8 +15,8 @@ date: 2025-08-02 21:48:46
 |CPU|四核ARM架构处理器|
 |内存|4GB|
 |系统存储|8GB|
-|网络接口||千兆以太网接口 *1|
-|硬盘接口|SATA3.0接口*1；支持内置2.5寸 硬盘|
+|网络接口|千兆以太网接口 *1|
+|硬盘接口|SATA3.0接口*1；支持内置2.5寸硬盘|
 |USB|USB3.0*1|
 |电源|12V/2A 电源|
 |产品尺寸|145mm*90mm*47mm|
@@ -125,9 +125,14 @@ date: 2025-08-02 21:48:46
       systemctl start docker.socket
       systemctl start docker
     ```
-
-
-
-
-![插入图片](/assets/images/200113_1.jpg)
-[引用网页](https://github.com/litten/hexo-theme-yilia/pull/646)
+3. Tailscale内网穿透
+  - 方法一：
+    注册tailscale账号
+    在casaOS中安装tailscale
+    将tailscale设置中的TS_ROUTES设为同一网段
+    复制日志中找到的一次性认证连接
+    在tailscale主页中添加设备
+  - 方法二：
+    在tailscale主页设置中打开key页面
+    获取一个短期90天的authkey
+    在casaOS上的tailscale设置中，添加TS_AUTHKEY
