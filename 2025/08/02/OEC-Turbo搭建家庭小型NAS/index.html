@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://sinclairdict.github.io/assets/images/250802_1.jpg">
 <meta property="article:published_time" content="2025-08-02T13:48:46.000Z">
-<meta property="article:modified_time" content="2025-08-07T16:23:44.974Z">
+<meta property="article:modified_time" content="2025-08-13T12:13:33.163Z">
 <meta property="article:author" content="Sinclair">
 <meta property="article:tag" content="NAS">
 <meta name="twitter:card" content="summary">
@@ -300,17 +300,17 @@
 <li>键入以下命令更新Armbian OS  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt update</span><br></pre></td></tr></table></figure></li>
 </ol>
 <h2 id="安装CasaOS"><a href="#安装CasaOS" class="headerlink" title="安装CasaOS"></a>安装CasaOS</h2><ol>
-<li>键入以下命令一键安装CasaOS，不需要管5G内存不足的提示  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://get.casaos.io | sudo bash</span><br></pre></td></tr></table></figure></li>
+<li>键入以下命令一键安装CasaOS，不需要管5G内存不足的提示（补充1）  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://get.casaos.io | sudo bash</span><br></pre></td></tr></table></figure></li>
 <li>在浏览器中键入armbian设备的IP地址，进入CasaOS后台</li>
 <li>点击“开始”，创建用户</li>
-<li>在App Store中键入以下命令，  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://play.cuse.eu.org/Cp0204-AppStore-Play.zip</span><br></pre></td></tr></table></figure></li>
-<li>安装dkTurbo插件，自动更换可用的Docker源</li>
+<li>在App Store中键入以下命令（补充2），  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://play.cuse.eu.org/Cp0204-AppStore-Play.zip</span><br></pre></td></tr></table></figure></li>
+<li>安装dkTurbo插件，图标变灰即生效，自动更换可用的Docker源</li>
 </ol>
 <h2 id="配置文件共享"><a href="#配置文件共享" class="headerlink" title="配置文件共享"></a>配置文件共享</h2><ol>
 <li>OEC-Turbo关机，拔掉DC电源</li>
 <li>插上SATA硬盘，再连接DC电源</li>
 <li>在CasaOS后台，选中新添加的硬盘，点击创建存储空间，点击格式化并创建</li>
-<li>在文件管理器中，进入新硬盘区域，创建共享文件夹</li>
+<li>在文件管理器中，进入新硬盘区域，创建共享文件夹（补充3）</li>
 </ol>
 <h2 id="搭建影视库"><a href="#搭建影视库" class="headerlink" title="搭建影视库"></a>搭建影视库</h2><ol>
 <li>在文件管理器中新建存放影视剧的文件夹，最好细分门类</li>
@@ -326,9 +326,23 @@
 <li>进入控制台，点击“扫描所有媒体库”</li>
 <li>此时媒体库大部分资源都可展示出封面</li>
 </ol>
-<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><ol>
-<li>添加&#x2F;删除SMB用户</li>
-</ol>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><h3 id="1-换源安装Docker"><a href="#1-换源安装Docker" class="headerlink" title="1.换源安装Docker"></a>1.换源安装Docker</h3><pre><code>一键安装CasaOS的过程中会拉取Docker，因为访问的关系，可能拉取失败，依次执行以下指令
+设置秘钥
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -</span><br></pre></td></tr></table></figure>
+
+增加软件源
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository \</span><br><span class="line">&quot;deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu \</span><br><span class="line">$(lsb_release -cs) \</span><br><span class="line">stable&quot;</span><br></pre></td></tr></table></figure>
+
+安装docker
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</span><br></pre></td></tr></table></figure>
+再次安装casaos
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://get.casaos.io | sudo bash</span><br></pre></td></tr></table></figure>
+</code></pre>
+<h3 id="2-更换应用库地址"><a href="#2-更换应用库地址" class="headerlink" title="2.更换应用库地址"></a>2.更换应用库地址</h3><pre><code>App Store中键入上述应用库时，可能因为访问的关系，添加不上，可先添加以下应用库，再安装安装dkTurbo插件
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://play.cuse.eu.org/Cp0204-AppStore-Play-arm64.zip</span><br></pre></td></tr></table></figure>
+</code></pre>
+<h3 id="3-创建访问用户"><a href="#3-创建访问用户" class="headerlink" title="3.创建访问用户"></a>3.创建访问用户</h3><pre><code>windows访问共享文件夹时需要用户名和密码，需要添加或删除SMB用户
+</code></pre>
 <ul>
 <li>在Armbian OS界面键入以下命令添加admin的用户<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useradd admin</span><br></pre></td></tr></table></figure></li>
 <li>为admin用户添加密码<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">smbpasswd -a admin</span><br></pre></td></tr></table></figure></li>
@@ -336,20 +350,14 @@
 <li>删除admin用户<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">userdel admin</span><br></pre></td></tr></table></figure></li>
 <li>将smb.casa.conf文件中的guest ok &#x3D; Yes改为No禁用访客账户</li>
 </ul>
-<ol start="2">
-<li>将Docker数据搬运至SATA硬盘</li>
-</ol>
-<ul>
+<h3 id="4-将Docker数据搬运至SATA硬盘"><a href="#4-将Docker数据搬运至SATA硬盘" class="headerlink" title="4.将Docker数据搬运至SATA硬盘"></a>4.将Docker数据搬运至SATA硬盘</h3><ul>
 <li>在SATA硬盘中新建Docker文件夹</li>
 <li>依次执行如下命令，注意文件路径<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop docker.socket</span><br><span class="line">systemctl stop docker</span><br><span class="line">mv /var/lib/docker /mnt/Storage1_sda1/docker</span><br><span class="line">ln -s /mnt/Storage1_sda1/docker /var/lib/docker</span><br><span class="line">systemctl start docker.socket</span><br><span class="line">systemctl start docker</span><br></pre></td></tr></table></figure></li>
 </ul>
-<ol start="3">
-<li>Tailscale内网穿透</li>
-</ol>
-<ul>
-<li>方法一：<br>注册tailscale账号<br>在casaOS中安装tailscale<br>将tailscale设置中的TS_ROUTES设为同一网段<br>复制日志中找到的一次性认证连接<br>在tailscale主页中添加设备</li>
-<li>方法二：<br>在tailscale主页设置中打开key页面<br>获取一个短期90天的authkey<br>在casaOS上的tailscale设置中，添加TS_AUTHKEY</li>
-</ul>
+<h3 id="5-Tailscale内网穿透"><a href="#5-Tailscale内网穿透" class="headerlink" title="5. Tailscale内网穿透"></a>5. Tailscale内网穿透</h3><pre><code>在tailscale主页设置中打开key页面
+获取一个短期90天的authkey
+在casaOS上的tailscale设置中，添加TS_AUTHKEY
+</code></pre>
 
     </div>
 
@@ -431,7 +439,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E5%A4%87%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">设备介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA%E5%87%86%E5%A4%87"><span class="nav-number">2.</span> <span class="nav-text">搭建准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E6%B3%A8armbian%E5%9B%BA%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">上注armbian固件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85CasaOS"><span class="nav-number">4.</span> <span class="nav-text">安装CasaOS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%85%B1%E4%BA%AB"><span class="nav-number">5.</span> <span class="nav-text">配置文件共享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA%E5%BD%B1%E8%A7%86%E5%BA%93"><span class="nav-number">6.</span> <span class="nav-text">搭建影视库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-number">7.</span> <span class="nav-text">补充</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E5%A4%87%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">设备介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA%E5%87%86%E5%A4%87"><span class="nav-number">2.</span> <span class="nav-text">搭建准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E6%B3%A8armbian%E5%9B%BA%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">上注armbian固件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85CasaOS"><span class="nav-number">4.</span> <span class="nav-text">安装CasaOS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%85%B1%E4%BA%AB"><span class="nav-number">5.</span> <span class="nav-text">配置文件共享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA%E5%BD%B1%E8%A7%86%E5%BA%93"><span class="nav-number">6.</span> <span class="nav-text">搭建影视库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-number">7.</span> <span class="nav-text">补充</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%8D%A2%E6%BA%90%E5%AE%89%E8%A3%85Docker"><span class="nav-number">7.1.</span> <span class="nav-text">1.换源安装Docker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%9B%B4%E6%8D%A2%E5%BA%94%E7%94%A8%E5%BA%93%E5%9C%B0%E5%9D%80"><span class="nav-number">7.2.</span> <span class="nav-text">2.更换应用库地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%88%9B%E5%BB%BA%E8%AE%BF%E9%97%AE%E7%94%A8%E6%88%B7"><span class="nav-number">7.3.</span> <span class="nav-text">3.创建访问用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%B0%86Docker%E6%95%B0%E6%8D%AE%E6%90%AC%E8%BF%90%E8%87%B3SATA%E7%A1%AC%E7%9B%98"><span class="nav-number">7.4.</span> <span class="nav-text">4.将Docker数据搬运至SATA硬盘</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Tailscale%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F"><span class="nav-number">7.5.</span> <span class="nav-text">5. Tailscale内网穿透</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
