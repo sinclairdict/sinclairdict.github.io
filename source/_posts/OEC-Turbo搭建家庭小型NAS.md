@@ -97,22 +97,22 @@ date: 2025-08-02 21:48:46
 ## 补充
 ### 1.换源安装Docker
     一键安装CasaOS的过程中会拉取Docker，因为访问的关系，可能拉取失败，依次执行以下指令
-    - 设置秘钥
+  - 设置秘钥
     ```
     curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -
     ```
-    - 增加软件源
+  - 增加软件源
     ```
     sudo add-apt-repository \
     "deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu \
     $(lsb_release -cs) \
     stable"
     ```
-    - 安装docker
+  - 安装docker
     ```
     sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
     ```
-    - 再次安装casaos
+  - 再次安装casaos
     ```
     curl -fsSL https://get.casaos.io | sudo bash
     ```
