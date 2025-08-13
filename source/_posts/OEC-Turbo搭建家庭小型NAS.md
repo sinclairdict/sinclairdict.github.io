@@ -59,23 +59,23 @@ date: 2025-08-02 21:48:46
   ```
 
 ## 安装CasaOS
-1. 键入以下命令一键安装CasaOS，不需要管5G内存不足的提示
+1. 键入以下命令一键安装CasaOS，不需要管5G内存不足的提示（补充1）
   ```
     curl -fsSL https://get.casaos.io | sudo bash
   ```
 2. 在浏览器中键入armbian设备的IP地址，进入CasaOS后台
 3. 点击“开始”，创建用户
-4. 在App Store中键入以下命令，
+4. 在App Store中键入以下命令（补充2），
   ```
     https://play.cuse.eu.org/Cp0204-AppStore-Play.zip
   ```
-5. 安装dkTurbo插件，自动更换可用的Docker源
+5. 安装dkTurbo插件，图标变灰即生效，自动更换可用的Docker源
 
 ## 配置文件共享
 1. OEC-Turbo关机，拔掉DC电源
 2. 插上SATA硬盘，再连接DC电源
 3. 在CasaOS后台，选中新添加的硬盘，点击创建存储空间，点击格式化并创建
-4. 在文件管理器中，进入新硬盘区域，创建共享文件夹
+4. 在文件管理器中，进入新硬盘区域，创建共享文件夹（补充3）
 
 ## 搭建影视库
 1. 在文件管理器中新建存放影视剧的文件夹，最好细分门类
@@ -95,7 +95,38 @@ date: 2025-08-02 21:48:46
 12. 此时媒体库大部分资源都可展示出封面
 
 ## 补充
-1. 添加/删除SMB用户
+### 1.换源安装Docker
+    一键安装CasaOS的过程中会拉取Docker，因为访问的关系，可能拉取失败，依次执行以下指令
+    设置秘钥
+    ```
+    curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -
+    ```
+
+    增加软件源
+    ```
+    sudo add-apt-repository \
+    "deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu \
+    $(lsb_release -cs) \
+    stable"
+    ```
+
+    安装docker
+    ```
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    ```
+    再次安装casaos
+    ```
+    curl -fsSL https://get.casaos.io | sudo bash
+    ```
+
+### 2.更换应用库地址
+    App Store中键入上述应用库时，可能因为访问的关系，添加不上，可先添加以下应用库，再安装安装dkTurbo插件
+    ```
+    https://play.cuse.eu.org/Cp0204-AppStore-Play-arm64.zip
+    ```
+
+### 3.创建访问用户
+    windows访问共享文件夹时需要用户名和密码，需要添加或删除SMB用户
   - 在Armbian OS界面键入以下命令添加admin的用户
     ```
       useradd admin
@@ -114,7 +145,7 @@ date: 2025-08-02 21:48:46
     ```
   - 将smb.casa.conf文件中的guest ok = Yes改为No禁用访客账户
 
-2. 将Docker数据搬运至SATA硬盘
+### 4.将Docker数据搬运至SATA硬盘
   - 在SATA硬盘中新建Docker文件夹
   - 依次执行如下命令，注意文件路径
     ```
@@ -125,14 +156,7 @@ date: 2025-08-02 21:48:46
       systemctl start docker.socket
       systemctl start docker
     ```
-3. Tailscale内网穿透
-  - 方法一：
-    注册tailscale账号
-    在casaOS中安装tailscale
-    将tailscale设置中的TS_ROUTES设为同一网段
-    复制日志中找到的一次性认证连接
-    在tailscale主页中添加设备
-  - 方法二：
+### 5. Tailscale内网穿透
     在tailscale主页设置中打开key页面
     获取一个短期90天的authkey
     在casaOS上的tailscale设置中，添加TS_AUTHKEY
