@@ -117,10 +117,8 @@ date: 2025-08-02 21:48:46
       curl -fsSL https://get.casaos.io | sudo bash
     ```
 ### 更换应用库地址
-    App Store中键入上述应用库时，可能因为访问的关系，添加不上，可先添加以下应用库，再安装安装dkTurbo插件
-    ```
-      https://play.cuse.eu.org/Cp0204-AppStore-Play-arm64.zip
-    ```
+    App Store中键入上述应用库时，可能因为访问的关系，添加不上，可先添加以下应用库，再安装dkTurbo插件
+    &ensp;&ensp;https://play.cuse.eu.org/Cp0204-AppStore-Play-arm64.zip
 ### 创建访问用户
     windows访问共享文件夹时需要用户名和密码，需要添加或删除SMB用户
   - 在Armbian OS界面键入以下命令添加admin的用户
