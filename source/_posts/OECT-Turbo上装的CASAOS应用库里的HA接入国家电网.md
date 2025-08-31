@@ -8,7 +8,7 @@ date: 2025-08-31 23:00:31
 ---
 国家电网插件用的是[sgcc_electricity_new](https://github.com/ARC-MX/sgcc_electricity_new)，流程稍微有点麻烦。
 <!--more-->
-装好CASAOS后，软件库里发现有home assistant，安装完之后，发现可以接入国家电网。
+装好CASAOS后，安装软件库里的Home Assistant，安装完常用插件后之后，参考上述教程接入国家电网。
 ### 准备
 1. 在github上下载sgcc_electricity_new的zip程序
 2. 通过MobaXterm登录OECT-Turbo后台
@@ -21,7 +21,7 @@ date: 2025-08-31 23:00:31
 2. 键入docker-compose up -d，第一次会提示安装docker-compose，根据提示安装即可
 3. 再次cd到设备sgcc_electricity_new-master文件夹下
 4. 重复的键入docker-compose logs sgcc_electricity_app，直到出现User xxxx state-refresh task run successfully!
-5. 记录上述的xxxx
+5. 记录上述出现的xxxx
 
 ### 添加集成
 1. 打开HA的config文件夹
