@@ -28,7 +28,7 @@
 <meta property="og:description" content="国家电网插件用的是sgcc_electricity_new，流程稍微有点麻烦。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-08-31T15:00:31.000Z">
-<meta property="article:modified_time" content="2025-09-01T14:52:15.158Z">
+<meta property="article:modified_time" content="2025-09-02T17:07:17.585Z">
 <meta property="article:author" content="Sinclair">
 <meta property="article:tag" content="Home Assistant">
 <meta name="twitter:card" content="summary">
@@ -215,9 +215,9 @@
 </ol>
 <h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><ol>
 <li>cd到设备sgcc_electricity_new-master文件夹下</li>
-<li>键入docker-compose up -d，第一次会提示安装docker-compose，根据提示安装即可</li>
+<li>键入docker-compose up -d，第一次会提示安装docker-compose，根据提示安装即可（注意一天最多登录5次）</li>
 <li>再次cd到设备sgcc_electricity_new-master文件夹下</li>
-<li>重复的键入docker-compose logs sgcc_electricity_app（但一天最多登录5次），直到出现User xxxx state-refresh task run successfully!</li>
+<li>重复的键入docker-compose logs sgcc_electricity_app，日志刷新可能会比较慢，直到出现User xxxx state-refresh task run successfully!，或者出现报错，就等第二天继续</li>
 <li>记录上述出现的xxxx</li>
 </ol>
 <h3 id="添加集成"><a href="#添加集成" class="headerlink" title="添加集成"></a>添加集成</h3><ol>
