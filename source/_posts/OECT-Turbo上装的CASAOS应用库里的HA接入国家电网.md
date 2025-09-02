@@ -18,9 +18,9 @@ date: 2025-08-31 23:00:31
 
 ### 运行
 1. cd到设备sgcc_electricity_new-master文件夹下
-2. 键入docker-compose up -d，第一次会提示安装docker-compose，根据提示安装即可
+2. 键入docker-compose up -d，第一次会提示安装docker-compose，根据提示安装即可（注意一天最多登录5次）
 3. 再次cd到设备sgcc_electricity_new-master文件夹下
-4. 重复的键入docker-compose logs sgcc_electricity_app（但一天最多登录5次），直到出现User xxxx state-refresh task run successfully!
+4. 重复的键入docker-compose logs sgcc_electricity_app，日志刷新可能会比较慢，直到出现User xxxx state-refresh task run successfully!，或者出现报错，就等第二天继续
 5. 记录上述出现的xxxx
 
 ### 添加集成
